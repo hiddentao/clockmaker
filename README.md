@@ -159,8 +159,7 @@ Timer(function() {
   }
 }, 5000, {
   repeat: true
-})
-  .start();
+}).start();
 ```
 
 
@@ -222,10 +221,13 @@ We can control multiple timers at a time by using the `Timers` interface.
 ```javascript
 var timers = new Timers();
 
-timers.new(handlerFn, 2000, { repeat: true });
-timers.new(aletFn, 1000);
+var timer1 = timers.new(handlerFn, 2000, { repeat: true });
+var timer2 = timers.new(aletFn, 1000);
+var timer3 = ...
 
-timers.start(); // start all timers
+timer1.start(); // we can start them one a a time, or...
+
+timers.start(); // ...start them all at once
 
 ... // some time later
 
