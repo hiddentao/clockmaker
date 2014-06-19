@@ -39,7 +39,7 @@ Or add the following inside your HTML:
 <script type="text/javascript" src="https://rawgithub.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
 ```
 
-## Examples
+## How to use
 
 These examples are all running in node.js. At the top of each example assume 
 we have the following:
@@ -230,6 +230,37 @@ timers.start(); // start all timers
 ... // some time later
 
 timers.stop();  // stop all timers
+```
+
+## Browser noconflict
+
+If you're using Clockmaker in a browser app and are not using an AMD or 
+CommonJS module system then it will add two new items into the global scope:
+
+* `Timer`
+* `Timers`
+
+If these clash with existing values in your global scope then you can use the 
+`.noConflict()` method calls to restore your existing values:
+
+```javascript
+// assume we're running in browser global scope, i.e. window
+
+var Timer = 'my timer class';
+var Timers = 'my timers class';
+
+// ... load clockmaker ...
+
+console.log(Timer); // Function
+console.log(Timers); // Function
+
+// restore my definitions
+
+var ClockmakerTimer = Timer.noConflict();
+var ClockmakerTimers = Timers.noConflict();
+
+console.log(Timer); // 'my timer class'
+console.log(Timers); // 'my timers class'
 ```
 
 
