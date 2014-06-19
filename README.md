@@ -5,8 +5,8 @@
 A flexible timer management system for Javascript.
 
 Clockmaker is inspired by [Mozilla's MiniDaemon](https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval#A_little_framework) and provides an alternative to the built-in `setTimeout` and `setInterval` functions. It is 
-especially useful when you are running multiple timers and wish to better 
-control over them.
+especially useful when you are running multiple timers and wish to exercise 
+better control over them.
 
 Features:
 
@@ -102,7 +102,7 @@ var timer = new Timer(function() {
 timer.start();
 ```
 
-Now let's stop the timer after 10 ticks:
+Let's stop the timer after 10 ticks:
 
 ```javascript
 var count = 0;
@@ -121,7 +121,24 @@ var timer = new Timer(function() {
 timer.start();
 ```
 
-Now let's stop and restart the timer using a second timer:
+We can change the delay interval in real-time:
+
+```javascript
+var delayMs = 1000;
+
+var timer = new Timer(function() {
+  console.log('Next tick will take 1 second longer');
+
+  delayMs += 1000;
+  timer.setDelay(delayMs);
+}, delayMs, {
+  repeat: true
+});
+
+timer.start();
+```
+
+Let's stop and restart the timer using a second timer:
 
 ```javascript
 var timer = new Timer(function() {
@@ -144,6 +161,7 @@ Timer(function() {
   repeat: true
 })
   .start();
+```
 
 
 ### Asynchronous handlers
