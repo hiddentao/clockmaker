@@ -45,7 +45,7 @@
   /** 
    * Construct a new timer
    *
-   * @param {Function} fn The function to invoke on each tick.
+   * @param {Function} fn The handler function to invoke on each tick.
    * @param {Number} delayMs The timer delay in milliseconds.
    * @param {Object} [options] Additional options.
    * @param {Object} [options.this] The `this` object to invoke `fn` with. If ommitted then `fn` is used as `this`.
@@ -215,6 +215,7 @@
 
     return t;
   };
+
 
 
 
