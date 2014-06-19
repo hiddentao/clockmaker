@@ -94,8 +94,6 @@
       return;
     }
 
-    this._runCount++;
-
     this._timerHandle = setTimeout(this._doTick, this._delayMs);
   };
 
@@ -106,6 +104,8 @@
    * Execute a timer tick, i.e. execute the callbak function.
    */
   Timer.prototype._doTick = function() {
+    this._runCount++;
+
     try {
       if (this._async) {
         this._fn.call(this._fnThis, this._doAfterTick);
@@ -146,6 +146,22 @@
 
     return this;
   };
+
+
+
+  /**
+   * Re-synchronise the tick schedule.
+   *
+   * This resets the internal timer to start from now.
+   */
+  Timer.prototype.synchronize = function() {
+    if (this._timerHandle) {
+      clearTimeout(this._timerHandle);
+    }
+
+    this._scheduleNextTick();
+  };
+
 
 
 

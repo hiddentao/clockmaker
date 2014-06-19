@@ -104,7 +104,42 @@ test['Timer'] = {
       mocker.clock.tick(4001);
 
       this.fn.should.have.been.calledOnce;
+    },
+
+    're-synchronize': {
+      'before tick': function() {
+        this.timer.start();
+
+        mocker.clock.tick(1000);
+
+        this.fn.should.have.been.notCalled;
+
+        this.timer.synchronize();
+
+        mocker.clock.tick(1000);
+
+        this.fn.should.have.been.notCalled;
+
+        mocker.clock.tick(1);
+
+        this.fn.should.have.been.calledOnce;
+      },
+      'after tick': function() {
+        this.timer.start();
+
+        mocker.clock.tick(1001);
+
+        this.fn.should.have.been.calledOnce;
+
+        this.timer.synchronize();
+        this.timer.isStopped().should.be.true;
+
+        mocker.clock.tick(1001);
+
+        this.fn.should.have.been.calledOnce;
+      }
     }
+
   },
 
 
@@ -226,7 +261,31 @@ test['Timer'] = {
       mocker.clock.tick(4000);
 
       this.fn.should.have.been.calledTwice;
-    }    
+    },
+
+
+    're-synchronize': function() {
+      this.timer.start();
+
+      mocker.clock.tick(1000);
+
+      this.fn.should.have.been.calledOnce;
+
+      mocker.clock.tick(999);
+
+      this.fn.should.have.been.calledOnce;
+
+      this.timer.synchronize();
+
+      mocker.clock.tick(1);
+
+      this.fn.should.have.been.calledOnce;
+
+      mocker.clock.tick(999);
+
+      this.fn.should.have.been.calledTwice;
+    }
+    
   },
 
 

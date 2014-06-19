@@ -162,6 +162,9 @@ Timer(function() {
 }).start();
 ```
 
+A timer does not keep track of how much time has elapsed when it gets stopped. 
+So when it gets started again it resumes with the full time delay.
+
 
 ### Asynchronous handlers
 
@@ -203,6 +206,28 @@ new Timer(function() {
 }).start();
 ```
 
+
+### Synchronize to now
+
+Sometimes we may want to reset a timer that's already running, i.e. stop and 
+then restart it without actually having to do so:
+
+```javascript
+/*
+In this example the second timer keeps 'resetting' the first one every 100ms. 
+The net effect is that the first timer never actually completes a tick.
+ */
+
+var timer = new Timer(function() {
+  console.log('hell world');
+}, 2000);
+
+timer.start();
+
+Timer(function() {
+  timer.synchronize();
+}, 100).start();
+```
 
 ### Handling errors
 
