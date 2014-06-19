@@ -187,6 +187,23 @@ the next tick straight away or once we've done all our necessary work inside
 our handler.
 
 
+### This context
+
+The `this` context for the handler function can be set:
+
+```javascript
+var ctx = {
+  dummy: true
+};
+
+new Timer(function() {
+  console.log(this.dummy);  // true
+}, 2000, {
+  this: ctx
+}).start();
+```
+
+
 ### Handling errors
 
 We can pass in an `onError` handler to be informed of errors:
