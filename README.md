@@ -217,9 +217,8 @@ then restart it without actually having to do so:
 In this example the second timer keeps 'resetting' the first one every 100ms. 
 The net effect is that the first timer never actually completes a tick.
  */
-
 var timer = new Timer(function() {
-  console.log('hell world');
+  console.log('hell world');  // this never gets executed
 }, 2000);
 
 timer.start();
