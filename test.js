@@ -175,19 +175,34 @@ test['Timer'] = {
       mocker.clock.tick(1001);
     },
 
-    'error handler set': function() {
-      var onError = mocker.spy();
+    'error handler set': {
+      'no error': function() {
+        var onError = mocker.spy();
 
-      var timer = clockmaker.Timer(this.fn, 1000, {
-        onError: onError
-      });      
+        var timer = clockmaker.Timer(mocker.spy(), 1000, {
+          onError: onError
+        });      
 
-      timer.start();
+        timer.start();
 
-      mocker.clock.tick(1001);
+        mocker.clock.tick(1001);
 
-      onError.should.have.been.calledOnce;
-      onError.should.have.been.calledWithExactly(this.err);
+        onError.should.have.been.notCalled;
+      },
+      'error': function() {
+        var onError = mocker.spy();
+
+        var timer = clockmaker.Timer(this.fn, 1000, {
+          onError: onError
+        });      
+
+        timer.start();
+
+        mocker.clock.tick(1001);
+
+        onError.should.have.been.calledOnce;
+        onError.should.have.been.calledWithExactly(this.err);
+      }
     }
   },
 

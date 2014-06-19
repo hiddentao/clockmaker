@@ -124,7 +124,7 @@
    * Timer tick execution completed, now handle any errors.
    */
   Timer.prototype._doAfterTick = function(err) {
-    if (this._onError) {
+    if (err && this._onError) {
       this._onError(err);
     }
 

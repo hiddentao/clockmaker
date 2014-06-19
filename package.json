@@ -1,6 +1,6 @@
 {
   "name": "clockmaker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Flexible Javascript timers which can be paused and modified on-the-fly",
   "main": "clockmaker.js",
   "scripts": {
