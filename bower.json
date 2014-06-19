@@ -1,0 +1,28 @@
+{
+  "name": "clockmaker",
+  "main": "clockmaker.js",
+  "version": "1.0.0",
+  "authors": [
+    "Ramesh Nair <ram@hiddentao.com>"
+  ],
+  "description": "Flexible Javascript timer management",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "clock",
+    "timer",
+    "daemon"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hiddentao/clockmaker",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "gulpfile.js",
+    "test.js"
+  ]
+}
