@@ -1,7 +1,7 @@
 {
   "name": "clockmaker",
   "main": "clockmaker.js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "authors": [
     "Ramesh Nair <ram@hiddentao.com>"
   ],
