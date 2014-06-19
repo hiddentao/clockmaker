@@ -232,7 +232,7 @@ timers.start(); // start all timers
 timers.stop();  // stop all timers
 ```
 
-## Browser noconflict
+## noConflict
 
 If you're using Clockmaker in a browser app and are not using an AMD or 
 CommonJS module system then it will add two new items into the global scope:
