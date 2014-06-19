@@ -1,11 +1,11 @@
 {
   "name": "clockmaker",
   "main": "clockmaker.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Ramesh Nair <ram@hiddentao.com>"
   ],
-  "description": "Flexible Javascript timer management",
+  "description": "Flexible Javascript timers which can be paused and modified on-the-fly",
   "moduleType": [
     "amd",
     "globals",

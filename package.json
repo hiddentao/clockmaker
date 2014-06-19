@@ -1,7 +1,7 @@
 {
   "name": "clockmaker",
-  "version": "1.0.0",
-  "description": "Flexible Javascript timer management",
+  "version": "1.0.1",
+  "description": "Flexible Javascript timers which can be paused and modified on-the-fly",
   "main": "clockmaker.js",
   "scripts": {
     "build": "gulp build"
