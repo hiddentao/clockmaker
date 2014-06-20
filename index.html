@@ -28,37 +28,327 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <h1>
+<a name="clockmaker" class="anchor" href="#clockmaker"><span class="octicon octicon-link"></span></a>Clockmaker</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><a href="http://travis-ci.org/hiddentao/clockmaker"><img src="https://secure.travis-ci.org/hiddentao/clockmaker.png" alt="Build Status"></a></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>A flexible timer management system for Javascript.</p>
+
+<p>Clockmaker is inspired by <a href="https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval#A_little_framework">Mozilla's MiniDaemon</a> and provides an alternative to the built-in <code>setTimeout</code> and <code>setInterval</code> functions. It is 
+especially useful when you are running multiple timers and wish to exercise 
+better control over them.</p>
+
+<p>Features:</p>
+
+<ul>
+<li>Stop and restart timers.</li>
+<li>Change the timer delay in real-time.</li>
+<li>Start and stop multiple timers in one go.</li>
+<li>Robust error handling.</li>
+<li>Uses method chaining for ease of use.</li>
+<li>Works in node.js and in the browser.</li>
+<li>Has no other dependencies.</li>
+<li>Small: &lt;1 KB minified and gzipped.</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h3>
+<a name="nodejs" class="anchor" href="#nodejs"><span class="octicon octicon-link"></span></a>node.js</h3>
+
+<p>Install using <a href="http://npmjs.org/">npm</a>:</p>
+
+<pre><code>$ npm install clockmaker
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>
+<a name="browser" class="anchor" href="#browser"><span class="octicon octicon-link"></span></a>Browser</h3>
+
+<p>Use <a href="https://github.com/bower/bower">bower</a>:</p>
+
+<pre><code>$ bower install clockmaker
+</code></pre>
+
+<p>Or add the following inside your HTML:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"https://rawgithub.com/hiddentao/clockmaker/master/clockmaker.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<h2>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<p>These examples are all running in node.js. At the top of each example assume 
+we have the following:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Timer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'clockmaker'</span><span class="p">).</span><span class="nx">Timer</span><span class="p">,</span>
+    <span class="nx">Timers</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'clockmaker'</span><span class="p">).</span><span class="nx">Timers</span><span class="p">;</span>
+</pre></div>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="settimeout" class="anchor" href="#settimeout"><span class="octicon octicon-link"></span></a>setTimeout</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>The basic <code>Timer</code> works in the same way as <code>setTimeout</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2 seconds done'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Notice how <code>start()</code> needs to be called to kick-off the timer. You can also 
+explicitly construct the <code>Timer</code> object:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2 seconds done'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Once a basic timer has ticked and invoked its handler it cannot be started again:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2 seconds done'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// false</span>
+
+<span class="c1">// ... some time later</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>  
+<span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// true</span>
+</pre></div>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="setinterval" class="anchor" href="#setinterval"><span class="octicon octicon-link"></span></a>setInterval</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>We simulate <code>setInterval</code> behaviour by setting <code>repeat: true</code> in the options.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds done'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Let's stop the timer after 10 ticks:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds done'</span><span class="p">);</span>
+
+  <span class="nx">count</span><span class="o">++</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="mi">10</span> <span class="o">===</span> <span class="nx">count</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">timer</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>We can change the delay interval in real-time:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">delayMs</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Next tick will take 1 second longer'</span><span class="p">);</span>
+
+  <span class="nx">delayMs</span> <span class="o">+=</span> <span class="mi">1000</span><span class="p">;</span>
+  <span class="nx">timer</span><span class="p">.</span><span class="nx">setDelay</span><span class="p">(</span><span class="nx">delayMs</span><span class="p">);</span>
+<span class="p">},</span> <span class="nx">delayMs</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Let's stop and restart the timer using a second timer:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds done'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+
+<span class="c1">// This second timer which will stop/start the first timer every 5 seconds</span>
+<span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">timer</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="mi">5000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>A timer does not keep track of how much time has elapsed when it gets stopped. 
+So when it gets started again it resumes with the full time delay.</p>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="asynchronous-handlers" class="anchor" href="#asynchronous-handlers"><span class="octicon octicon-link"></span></a>Asynchronous handlers</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>The timer waits for the handler to finish executing before scheduling the next 
+tick. But what if our handler is asynchronous? we have to inform the timer of 
+this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ... do some stuff</span>
+  <span class="nx">cb</span><span class="p">();</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Until our handler invokes the <code>cb()</code> callback (see above) the timer will not 
+schedule the next tick. This allows us to decide whether we want to schedule 
+the next tick straight away or once we've done all our necessary work inside 
+our handler.</p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="this-context" class="anchor" href="#this-context"><span class="octicon octicon-link"></span></a>This context</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>The <code>this</code> context for the handler function can be set:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">dummy</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">};</span>
+
+<span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">dummy</span><span class="p">);</span>  <span class="c1">// true</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="k">this</span><span class="o">:</span> <span class="nx">ctx</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="synchronize-to-now" class="anchor" href="#synchronize-to-now"><span class="octicon octicon-link"></span></a>Synchronize to now</h3>
+
+<p>Sometimes we may want to reset a timer that's already running, i.e. stop and 
+then restart it without actually having to do so:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="cm">/*</span>
+<span class="cm">In this example the second timer keeps 'resetting' the first one every 100ms. </span>
+<span class="cm">The net effect is that the first timer never actually completes a tick.</span>
+<span class="cm"> */</span>
+<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'hell world'</span><span class="p">);</span>  <span class="c1">// this never gets executed</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+<span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">timer</span><span class="p">.</span><span class="nx">synchronize</span><span class="p">();</span>
+<span class="p">},</span> <span class="mi">100</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="handling-errors" class="anchor" href="#handling-errors"><span class="octicon octicon-link"></span></a>Handling errors</h3>
+
+<p>We can pass in an <code>onError</code> handler to be informed of errors:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'A dummy error'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">onError</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>  <span class="c1">// A dummy error</span>
+  <span class="p">}</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<p>Error handling works for asynchronous handlers too:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">cb</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'A dummy error'</span><span class="p">));</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">onError</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>  <span class="c1">// A dummy error</span>
+  <span class="p">}</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="multiple-timers" class="anchor" href="#multiple-timers"><span class="octicon octicon-link"></span></a>Multiple timers</h3>
+
+<p>We can control multiple timers at a time by using the <code>Timers</code> interface.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timers</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timers</span><span class="p">();</span>
+
+<span class="kd">var</span> <span class="nx">timer1</span> <span class="o">=</span> <span class="nx">timers</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="nx">handlerFn</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span> <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">timer2</span> <span class="o">=</span> <span class="nx">timers</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="nx">aletFn</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">timer3</span> <span class="o">=</span> <span class="p">...</span>
+
+<span class="nx">timer1</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// we can start them one a a time, or...</span>
+
+<span class="nx">timers</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// ...start them all at once</span>
+
+<span class="p">...</span> <span class="c1">// some time later</span>
+
+<span class="nx">timers</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>  <span class="c1">// stop all timers</span>
+</pre></div>
+
+<h2>
+<a name="noconflict" class="anchor" href="#noconflict"><span class="octicon octicon-link"></span></a>noConflict</h2>
+
+<p>If you're using Clockmaker in a browser app and are not using an AMD or 
+CommonJS module system then it will add two new items into the global scope:</p>
+
+<ul>
+<li><code>Timer</code></li>
+<li><code>Timers</code></li>
+</ul><p>If these clash with existing values in your global scope then you can use the 
+<code>.noConflict()</code> method calls to restore your existing values:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// assume we're running in browser global scope, i.e. window</span>
+
+<span class="kd">var</span> <span class="nx">Timer</span> <span class="o">=</span> <span class="s1">'my timer class'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">Timers</span> <span class="o">=</span> <span class="s1">'my timers class'</span><span class="p">;</span>
+
+<span class="c1">// ... load clockmaker ...</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Timer</span><span class="p">);</span> <span class="c1">// Function</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Timers</span><span class="p">);</span> <span class="c1">// Function</span>
+
+<span class="c1">// restore my definitions</span>
+
+<span class="kd">var</span> <span class="nx">ClockmakerTimer</span> <span class="o">=</span> <span class="nx">Timer</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">ClockmakerTimers</span> <span class="o">=</span> <span class="nx">Timers</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Timer</span><span class="p">);</span> <span class="c1">// 'my timer class'</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Timers</span><span class="p">);</span> <span class="c1">// 'my timers class'</span>
+</pre></div>
+
+<h2>
+<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<p>To build the code:</p>
+
+<pre><code>$ npm install -g gulp
+$ npm install
+$ gulp build &lt;-- this will build the code and run the tests
+</code></pre>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Contributions are welcome! Please see CONTRIBUTING.md.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT - see LICENSE.md</p>
         </section>
 
         <aside id="sidebar">
