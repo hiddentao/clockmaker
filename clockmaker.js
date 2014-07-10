@@ -108,9 +108,9 @@
 
     try {
       if (this._async) {
-        this._fn.call(this._fnThis, this._doAfterTick);
+        this._fn.call(this._fnThis, this, this._doAfterTick);
       } else {
-        this._fn.call(this._fnThis);
+        this._fn.call(this._fnThis, this);
         this._doAfterTick();
       }
     } catch (err) {
@@ -135,6 +135,7 @@
 
   /**
    * Start the timer.
+   * @return {this}
    */
   Timer.prototype.start = function() {
     if ('started' === this._state) {
@@ -153,6 +154,8 @@
    * Re-synchronise the tick schedule.
    *
    * This resets the internal timer to start from now.
+   *
+   * @return {this}
    */
   Timer.prototype.synchronize = function() {
     if (this._timerHandle) {
@@ -160,6 +163,8 @@
     }
 
     this._scheduleNextTick();
+
+    return this;
   };
 
 
@@ -167,6 +172,7 @@
 
   /**
    * Stop the timer.
+   * @return {this}
    */
   Timer.prototype.stop = function() {
     if (this._timerHandle) {
@@ -183,11 +189,22 @@
 
   /**
    * Set the timer delay.
+   * @return {this}
    */
   Timer.prototype.setDelay = function(delayMs) {
     this._delayMs = delayMs;
 
     return this;
+  };
+
+
+
+  /**
+   * Get the timer delay.
+   * @return {Integer} The current timer delay.
+   */
+  Timer.prototype.getDelay = function(delayMs) {
+    return this._delayMs;
   };
 
 

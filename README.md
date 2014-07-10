@@ -93,22 +93,20 @@ timer.isStopped();  // true
 We simulate `setInterval` behaviour by setting `repeat: true` in the options.
 
 ```javascript
-var timer = new Timer(function() {
-  console.log('Another 2 seconds done');
+Timer(function() {
+  console.log('Another 2 seconds passed');
 }, 2000, {
   repeat: true
-});
-
-timer.start();
+}).start();
 ```
 
-Let's stop the timer after 10 ticks:
+Let's stop the timer after 10 ticks (notice how the `Timer` instance is passes as an argument to the handler):
 
 ```javascript
 var count = 0;
 
-var timer = new Timer(function() {
-  console.log('Another 2 seconds done');
+Timer(function(timer) {
+  console.log('Another 2 seconds passed');
 
   count++;
   if (10 === count) {
@@ -116,26 +114,19 @@ var timer = new Timer(function() {
   }
 }, 2000, {
   repeat: true
-});
-
-timer.start();
+}).start();
 ```
 
 We can change the delay interval in real-time:
 
 ```javascript
-var delayMs = 1000;
-
-var timer = new Timer(function() {
+Timer(function(timer) {
   console.log('Next tick will take 1 second longer');
 
-  delayMs += 1000;
-  timer.setDelay(delayMs);
+  timer.setDelay(timer.getDelay() + 1000);
 }, delayMs, {
   repeat: true
-});
-
-timer.start();
+}).start();
 ```
 
 Let's stop and restart the timer using a second timer:
@@ -173,7 +164,7 @@ tick. But what if our handler is asynchronous? we have to inform the timer of
 this:
 
 ```javascript
-var timer = new Timer(function(cb) {
+var timer = new Timer(function(timer, cb) {
   // ... do some stuff
   cb();
 }, 2000, {
@@ -186,9 +177,9 @@ timer.start();
 
 Until our handler invokes the `cb()` callback (see above) the timer will not 
 schedule the next tick. This allows us to decide whether we want to schedule 
-the next tick straight away or once we've done all our necessary work inside 
-our handler.
+the next tick straight away (i.e. calling `cb()` straight away) or once we've done all our necessary work inside our handler (i.e. calling `cb()` at the end).
 
+We can also use the callback to [handle errors](#handling-errors).
 
 ### This context
 
@@ -309,18 +300,18 @@ console.log(Timers); // 'my timers class'
 
 ## Building
 
-To build the code:
+To build the code and run the tests:
 
     $ npm install -g gulp
     $ npm install
-    $ gulp build <-- this will build the code and run the tests
+    $ gulp build
 
 
 ## Contributing
 
-Contributions are welcome! Please see CONTRIBUTING.md.
+Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/hiddentao/clockmaker/blob/master/CONTRIBUTING.md).
 
 
 ## License
 
-MIT - see LICENSE.md
+MIT - see [LICENSE.md](https://github.com/hiddentao/clockmaker/blob/master/LICENSE.md)

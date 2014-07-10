@@ -39,8 +39,15 @@ test['Timer'] = {
     }
   },
 
+  'get/set delay': function() {
+    var timer = clockmaker.Timer(mocker.spy(), 1000);
+
+    timer.getDelay().should.eql(1000);
+    timer.setDelay(500).getDelay().should.eql(500);
+  },
+
   'method chaining': function() {
-    var timer = clockmaker.Timer(this.fn, 1000);
+    var timer = clockmaker.Timer(mocker.spy(), 1000);
 
     timer.setDelay(0).stop().start().stop();
   },
@@ -52,13 +59,22 @@ test['Timer'] = {
     },
 
     'start': function() {
-      this.timer.start();
+      this.timer.start().should.eql(this.timer);
       this.timer.isStopped().should.be.false;
 
       mocker.clock.tick(10000);
 
       this.fn.should.have.been.calledOnce;
       this.fn.should.have.been.calledOn(this.fn);
+    },
+
+    'receives timer as argument': function() {
+      this.timer.start();
+
+      mocker.clock.tick(10000);
+
+      this.fn.should.have.been.calledOnce;
+      this.fn.should.have.been.calledWithExactly(this.timer);
     },
 
     'multiple start calls ok': function() {
@@ -68,6 +84,10 @@ test['Timer'] = {
       mocker.clock.tick(1001);
 
       this.fn.should.have.been.calledOnce;
+    },
+
+    'stop': function() {
+      this.timer.stop().should.eql(this.timer);
     },
 
     'multiple stop calls ok': function() {
@@ -114,7 +134,7 @@ test['Timer'] = {
 
         this.fn.should.have.been.notCalled;
 
-        this.timer.synchronize();
+        this.timer.synchronize().should.eql(this.timer);
 
         mocker.clock.tick(1000);
 
@@ -142,19 +162,32 @@ test['Timer'] = {
 
   },
 
+  'handler this context': {
+    'default': function() {
+      var fn = mocker.spy();
+      var timer = clockmaker.Timer(fn, 1000);
 
-  'handler context': function() {
-    var fn = mocker.spy();
-    var timer = clockmaker.Timer(fn, 1000, {
-      this: test
-    });
+      timer.start();
 
-    timer.start();
+      mocker.clock.tick(1001);
 
-    mocker.clock.tick(1001);
+      fn.should.have.been.calledOnce;
+      fn.should.have.been.calledOn(fn);
+    },
+    'when set': function() {
+      var fn = mocker.spy();
+      var ctx = {};
+      var timer = clockmaker.Timer(fn, 1000, {
+        this: ctx
+      });
 
-    fn.should.have.been.calledOnce;
-    fn.should.have.been.calledOn(test);
+      timer.start();
+
+      mocker.clock.tick(1001);
+
+      fn.should.have.been.calledOnce;
+      fn.should.have.been.calledOn(ctx);
+    }
   },
 
 
@@ -225,6 +258,7 @@ test['Timer'] = {
       mocker.clock.tick(1001);
 
       this.fn.should.have.been.calledOnce;
+      this.fn.should.have.been.calledWithExactly(this.timer);
 
       mocker.clock.tick(1001);
 
@@ -320,6 +354,18 @@ test['Timer'] = {
       });
     },
 
+
+    'receives timer as argument': function() {
+      this.timer.start();
+
+      mocker.clock.tick(1001);
+
+      this.fn.should.have.been.calledOnce;
+      this.fn.should.have.been.calledWith(this.timer);
+    },
+
+
+
     'waits for callback to return': function() {
       this.timer.start();
 
@@ -334,7 +380,7 @@ test['Timer'] = {
 
 
     're-schedules repeat timer after callback returns': function() {
-      this.handler = function(cb) {
+      this.handler = function(timer, cb) {
         setTimeout(cb, 10000);
       };
 
@@ -353,17 +399,30 @@ test['Timer'] = {
       this.fn.should.have.been.calledTwice;
     },
 
-    'handler context': function() {
-      var timer = clockmaker.Timer(this.fn, 1000, {
-        this: test,
-        async: true
-      });
+    'handler context': {
+      'default': function() {
+        var timer = clockmaker.Timer(this.fn, 1000, {
+          async: true
+        });
 
-      timer.start();
+        timer.start();
 
-      mocker.clock.tick(1001);
+        mocker.clock.tick(1001);
 
-      this.fn.should.have.been.calledOn(test);
+        this.fn.should.have.been.calledOn(this.fn);
+      },
+      'when set': function() {
+        var timer = clockmaker.Timer(this.fn, 1000, {
+          this: test,
+          async: true
+        });
+
+        timer.start();
+
+        mocker.clock.tick(1001);
+
+        this.fn.should.have.been.calledOn(test);
+      },
     },
 
     'error handling': {
@@ -385,7 +444,7 @@ test['Timer'] = {
       'outside callback': function() {
         var err = new Error('blah');
 
-        this.handler = function(cb) {
+        this.handler = function(timer, cb) {
           throw err;
         }
 
@@ -399,7 +458,7 @@ test['Timer'] = {
       'inside callback': function() {
         var err = new Error('blah');
 
-        this.handler = function(cb) {
+        this.handler = function(timer, cb) {
           cb(err);
         };
 
