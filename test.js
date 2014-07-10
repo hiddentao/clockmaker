@@ -71,6 +71,19 @@ test['Timer'] = {
       this.fn.should.have.been.calledOn(this.fn);
     },
 
+    'tick count': function() {
+      this.timer.start().should.eql(this.timer);
+      this.timer.isStopped().should.be.false;
+
+      mocker.clock.tick(10000);
+
+      this.timer.start();
+      this.timer.start();
+      this.timer.start();
+
+      this.timer.getNumTicks().should.eql(1);
+    },
+
     'receives timer as argument': function() {
       this.timer.start();
 
@@ -268,6 +281,18 @@ test['Timer'] = {
       this.fn.should.have.been.calledTwice;
     },
 
+    'tick count': function() {
+      this.timer.start();
+
+      mocker.clock.tick(1001);
+
+      this.timer.getNumTicks().should.eql(1);
+
+      mocker.clock.tick(1001);
+
+      this.timer.getNumTicks().should.eql(2);
+    },
+
     'can be paused and resumed': function() {
       this.timer.start();
 
@@ -281,6 +306,7 @@ test['Timer'] = {
       mocker.clock.tick(1001);
 
       this.fn.should.have.been.calledOnce;
+      this.timer.getNumTicks().should.eql(1);
 
       this.timer.start();
       this.timer.isStopped().should.be.false;
@@ -292,6 +318,7 @@ test['Timer'] = {
       mocker.clock.tick(1000);
 
       this.fn.should.have.been.calledTwice;
+      this.timer.getNumTicks().should.eql(2);
     },
 
     'change delay mid-way': function() {
@@ -332,10 +359,12 @@ test['Timer'] = {
       mocker.clock.tick(1);
 
       this.fn.should.have.been.calledOnce;
+      this.timer.getNumTicks().should.eql(1);
 
       mocker.clock.tick(999);
 
       this.fn.should.have.been.calledTwice;
+      this.timer.getNumTicks().should.eql(2);
     }
     
   },
@@ -396,10 +425,12 @@ test['Timer'] = {
       mocker.clock.tick(10001);
 
       this.fn.should.have.been.calledOnce;
+      this.timer.getNumTicks().should.eql(1);
 
       mocker.clock.tick(1001);
 
       this.fn.should.have.been.calledTwice;
+      this.timer.getNumTicks().should.eql(2);
     },
 
     'handler context': {

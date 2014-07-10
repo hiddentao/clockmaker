@@ -188,7 +188,7 @@
 
 
   /**
-   * Set the timer delay.
+   * Set the timer delay in milliseconds.
    * @return {this}
    */
   Timer.prototype.setDelay = function(delayMs) {
@@ -201,10 +201,20 @@
 
   /**
    * Get the timer delay.
-   * @return {Integer} The current timer delay.
+   * @return {Integer} The current timer delay in milliseconds.
    */
-  Timer.prototype.getDelay = function(delayMs) {
+  Timer.prototype.getDelay = function() {
     return this._delayMs;
+  };
+
+
+
+  /**
+   * Get the no. of times the timer has ticked.
+   * @return {Integer} The no. of times the timer has ticked.
+   */
+  Timer.prototype.getNumTicks = function() {
+    return this._runCount;
   };
 
 

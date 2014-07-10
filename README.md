@@ -36,7 +36,7 @@ Use [bower](https://github.com/bower/bower):
 Or add the following inside your HTML:
 
 ```html
-<script type="text/javascript" src="https://rawgithub.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
 ```
 
 ## How to use
@@ -51,7 +51,7 @@ var Timer = require('clockmaker').Timer,
 
 
 
-### setTimeout
+### Single-run timer
 
 The basic `Timer` works in the same way as `setTimeout`:
 
@@ -105,17 +105,20 @@ timer.stop();
 timer.isStopped();  // true
 ```
 
-### setInterval
+
+### Repeating timer
 
 You can simulate `setInterval` behaviour by setting `repeat: true` in the options.
 
 ```javascript
-Timer(function() {
-  console.log('Another 2 seconds passed');
+Timer(function(timer) {
+  console.log('Another 2 seconds passed. Number of ticks so far: ' + timer.getNumTicks());
 }, 2000, {
   repeat: true
 }).start();
 ```
+
+The `getNumTicks()` method tells you how many times the timer has ticked.
 
 Let's stop the timer after 10 ticks:
 
