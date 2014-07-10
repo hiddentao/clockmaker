@@ -33,7 +33,7 @@
 
 <p><a href="http://travis-ci.org/hiddentao/clockmaker"><img src="https://secure.travis-ci.org/hiddentao/clockmaker.png" alt="Build Status"></a></p>
 
-<p>A flexible timer management system for Javascript.</p>
+<p>Flexible timers for Javascript which can be paused and modified on-the-fly.</p>
 
 <p>Clockmaker is inspired by <a href="https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval#A_little_framework">Mozilla's MiniDaemon</a> and provides an alternative to the built-in <code>setTimeout</code> and <code>setInterval</code> functions. It is 
 especially useful when you are running multiple timers and wish to exercise 
@@ -43,7 +43,7 @@ better control over them.</p>
 
 <ul>
 <li>Stop and restart timers.</li>
-<li>Change the timer delay in real-time.</li>
+<li>Change the timer interval in real-time.</li>
 <li>Start and stop multiple timers in one go.</li>
 <li>Robust error handling.</li>
 <li>Uses method chaining for ease of use.</li>
@@ -78,7 +78,7 @@ better control over them.</p>
 <a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h2>
 
 <p>These examples are all running in node.js. At the top of each example assume 
-we have the following:</p>
+you have the following:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Timer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'clockmaker'</span><span class="p">).</span><span class="nx">Timer</span><span class="p">,</span>
     <span class="nx">Timers</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'clockmaker'</span><span class="p">).</span><span class="nx">Timers</span><span class="p">;</span>
@@ -89,13 +89,14 @@ we have the following:</p>
 
 <p>The basic <code>Timer</code> works in the same way as <code>setTimeout</code>:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2 seconds done'</span><span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">timer</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">timer</span><span class="p">.</span><span class="nx">getDelay</span><span class="p">()</span> <span class="o">+</span> <span class="s1">' millseconds done'</span><span class="p">);</span>
 <span class="p">},</span> <span class="mi">2000</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
-<p>Notice how <code>start()</code> needs to be called to kick-off the timer. You can also 
-explicitly construct the <code>Timer</code> object:</p>
+<p>Notice how <code>start()</code> needs to be called to kick-off the timer. Also notice how the <code>Timer</code> instance is passes as an argument to the handler, allowing us to query and control the timer from within our handler.</p>
+
+<p>You can also explicitly construct the <code>Timer</code> object:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'2 seconds done'</span><span class="p">);</span>
@@ -113,32 +114,45 @@ explicitly construct the <code>Timer</code> object:</p>
 <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
 <span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// false</span>
 
-<span class="c1">// ... some time later</span>
+<span class="c1">// ... &gt;2 seconds later</span>
 
-<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>  
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>      <span class="c1">// has no effect</span>
+<span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// true</span>
+</pre></div>
+
+<p>And you can stop a timer from executing its handler in the first place:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'You should never see this line'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// false</span>
+
+<span class="c1">// ... &lt;2 seconds later</span>
+
+<span class="nx">timer</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
 <span class="nx">timer</span><span class="p">.</span><span class="nx">isStopped</span><span class="p">();</span>  <span class="c1">// true</span>
 </pre></div>
 
 <h3>
 <a name="setinterval" class="anchor" href="#setinterval"><span class="octicon octicon-link"></span></a>setInterval</h3>
 
-<p>We simulate <code>setInterval</code> behaviour by setting <code>repeat: true</code> in the options.</p>
+<p>You can simulate <code>setInterval</code> behaviour by setting <code>repeat: true</code> in the options.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds done'</span><span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds passed'</span><span class="p">);</span>
 <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-
-<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
 <p>Let's stop the timer after 10 ticks:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
-<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds done'</span><span class="p">);</span>
+<span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">timer</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Another 2 seconds passed'</span><span class="p">);</span>
 
   <span class="nx">count</span><span class="o">++</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="mi">10</span> <span class="o">===</span> <span class="nx">count</span><span class="p">)</span> <span class="p">{</span>
@@ -146,25 +160,18 @@ explicitly construct the <code>Timer</code> object:</p>
   <span class="p">}</span>
 <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-
-<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
-<p>We can change the delay interval in real-time:</p>
+<p>You can change the delay interval in real-time:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">delayMs</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
-
-<span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">timer</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Next tick will take 1 second longer'</span><span class="p">);</span>
 
-  <span class="nx">delayMs</span> <span class="o">+=</span> <span class="mi">1000</span><span class="p">;</span>
-  <span class="nx">timer</span><span class="p">.</span><span class="nx">setDelay</span><span class="p">(</span><span class="nx">delayMs</span><span class="p">);</span>
+  <span class="nx">timer</span><span class="p">.</span><span class="nx">setDelay</span><span class="p">(</span><span class="nx">timer</span><span class="p">.</span><span class="nx">getDelay</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1000</span><span class="p">);</span>
 <span class="p">},</span> <span class="nx">delayMs</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">repeat</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-
-<span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+<span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
 <p>Let's stop and restart the timer using a second timer:</p>
@@ -197,10 +204,10 @@ So when it gets started again it resumes with the full time delay.</p>
 <a name="asynchronous-handlers" class="anchor" href="#asynchronous-handlers"><span class="octicon octicon-link"></span></a>Asynchronous handlers</h3>
 
 <p>The timer waits for the handler to finish executing before scheduling the next 
-tick. But what if our handler is asynchronous? we have to inform the timer of 
-this:</p>
+tick. But what if the handler is asynchronous? you can inform the timer of 
+this and be given a callback:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">timer</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// ... do some stuff</span>
   <span class="nx">cb</span><span class="p">();</span>
 <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
@@ -211,10 +218,10 @@ this:</p>
 <span class="nx">timer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
-<p>Until our handler invokes the <code>cb()</code> callback (see above) the timer will not 
-schedule the next tick. This allows us to decide whether we want to schedule 
-the next tick straight away or once we've done all our necessary work inside 
-our handler.</p>
+<p>In this case, until your handler invokes the <code>cb()</code> callback (see above) the timer will not schedule the next tick. This allows you to decide whether you want to schedule 
+the next tick straight away (i.e. calling <code>cb()</code> straight away) or once all necessary work inside the handler is done (i.e. calling <code>cb()</code> at the end).</p>
+
+<p>You can also use the callback to <a href="#handling-errors">handle errors</a>.</p>
 
 <h3>
 <a name="this-context" class="anchor" href="#this-context"><span class="octicon octicon-link"></span></a>This context</h3>
@@ -235,7 +242,7 @@ our handler.</p>
 <h3>
 <a name="synchronize-to-now" class="anchor" href="#synchronize-to-now"><span class="octicon octicon-link"></span></a>Synchronize to now</h3>
 
-<p>Sometimes we may want to reset a timer that's already running, i.e. stop and 
+<p>Sometimes you may want to reset a timer that's already running, i.e. stop and 
 then restart it without actually having to do so:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="cm">/*</span>
@@ -256,7 +263,7 @@ then restart it without actually having to do so:</p>
 <h3>
 <a name="handling-errors" class="anchor" href="#handling-errors"><span class="octicon octicon-link"></span></a>Handling errors</h3>
 
-<p>We can pass in an <code>onError</code> handler to be informed of errors:</p>
+<p>You can pass in an <code>onError</code> handler to be informed of errors:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'A dummy error'</span><span class="p">);</span>
@@ -269,7 +276,7 @@ then restart it without actually having to do so:</p>
 
 <p>Error handling works for asynchronous handlers too:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">timer</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">cb</span><span class="p">(</span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'A dummy error'</span><span class="p">));</span>
 <span class="p">},</span> <span class="mi">2000</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -279,10 +286,12 @@ then restart it without actually having to do so:</p>
 <span class="p">}).</span><span class="nx">start</span><span class="p">();</span>
 </pre></div>
 
+<p><em>Note: If you don't pass in an <code>onError</code> handler then errors are ignored.</em></p>
+
 <h3>
 <a name="multiple-timers" class="anchor" href="#multiple-timers"><span class="octicon octicon-link"></span></a>Multiple timers</h3>
 
-<p>We can control multiple timers at a time by using the <code>Timers</code> interface.</p>
+<p>You can control multiple timers at a time by using the <code>Timers</code> interface.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">timers</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timers</span><span class="p">();</span>
 
@@ -290,7 +299,7 @@ then restart it without actually having to do so:</p>
 <span class="kd">var</span> <span class="nx">timer2</span> <span class="o">=</span> <span class="nx">timers</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="nx">aletFn</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">timer3</span> <span class="o">=</span> <span class="p">...</span>
 
-<span class="nx">timer1</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// we can start them one a a time, or...</span>
+<span class="nx">timer1</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// you can start them one a a time, or...</span>
 
 <span class="nx">timers</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// ...start them all at once</span>
 
@@ -333,22 +342,22 @@ CommonJS module system then it will add two new items into the global scope:</p>
 <h2>
 <a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
 
-<p>To build the code:</p>
+<p>To build the code and run the tests:</p>
 
 <pre><code>$ npm install -g gulp
 $ npm install
-$ gulp build &lt;-- this will build the code and run the tests
+$ gulp build
 </code></pre>
 
 <h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
-<p>Contributions are welcome! Please see CONTRIBUTING.md.</p>
+<p>Contributions are welcome! Please see <a href="https://github.com/hiddentao/clockmaker/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
 
 <h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
-<p>MIT - see LICENSE.md</p>
+<p>MIT - see <a href="https://github.com/hiddentao/clockmaker/blob/master/LICENSE.md">LICENSE.md</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/hiddentao">hiddentao</a></p>
