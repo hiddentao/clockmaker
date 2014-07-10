@@ -33,12 +33,6 @@ Use [bower](https://github.com/bower/bower):
 
     $ bower install clockmaker
 
-Or add the following inside your HTML:
-
-```html
-<script type="text/javascript" src="https://cdn.rawgit.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
-```
-
 ## How to use
 
 These examples are all running in node.js. At the top of each example assume 
