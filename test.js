@@ -1,3 +1,6 @@
+"use strict";
+
+
 var sinon = require('sinon');
 
 var chai = require('chai'),
@@ -13,7 +16,7 @@ var clockmaker = require('./clockmaker.min');
 
 var mocker = null;
 
-module.exports = test = {
+var test = module.exports = {
   beforeEach: function() {
     mocker = sinon.sandbox.create({
       useFakeTimers: true
