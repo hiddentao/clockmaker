@@ -56,13 +56,14 @@ var Timer = require('clockmaker').Timer,
 The basic `Timer` works in the same way as `setTimeout`:
 
 ```javascript
-Timer(function() {
-  console.log('2 seconds done');
+Timer(function(timer) {
+  console.log(timer.getDelay() + ' millseconds done');
 }, 2000).start();
 ```
 
-Notice how `start()` needs to be called to kick-off the timer. You can also 
-explicitly construct the `Timer` object:
+Notice how `start()` needs to be called to kick-off the timer. Also notice how the `Timer` instance is passes as an argument to the handler, allowing us to query and control the timer from within our handler.
+
+You can also explicitly construct the `Timer` object:
 
 ```javascript
 var timer = new Timer(function() {
@@ -116,7 +117,7 @@ Timer(function() {
 }).start();
 ```
 
-Let's stop the timer after 10 ticks (notice how the `Timer` instance is passes as an argument to the handler):
+Let's stop the timer after 10 ticks:
 
 ```javascript
 var count = 0;
