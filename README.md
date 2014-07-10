@@ -42,7 +42,7 @@ Or add the following inside your HTML:
 ## How to use
 
 These examples are all running in node.js. At the top of each example assume 
-we have the following:
+you have the following:
 
 ```javascript
 var Timer = require('clockmaker').Timer,
@@ -89,7 +89,7 @@ timer.start();      // has no effect
 timer.isStopped();  // true
 ```
 
-And we can stop a timer from executing its handler if we `stop()` it in time:
+And you can stop a timer from executing its handler in the first place:
 
 ```javascript
 var timer = new Timer(function() {
@@ -107,7 +107,7 @@ timer.isStopped();  // true
 
 ### setInterval
 
-We simulate `setInterval` behaviour by setting `repeat: true` in the options.
+You can simulate `setInterval` behaviour by setting `repeat: true` in the options.
 
 ```javascript
 Timer(function() {
@@ -134,7 +134,7 @@ Timer(function(timer) {
 }).start();
 ```
 
-We can change the delay interval in real-time:
+You can change the delay interval in real-time:
 
 ```javascript
 Timer(function(timer) {
@@ -177,8 +177,8 @@ So when it gets started again it resumes with the full time delay.
 ### Asynchronous handlers
 
 The timer waits for the handler to finish executing before scheduling the next 
-tick. But what if our handler is asynchronous? we have to inform the timer of 
-this:
+tick. But what if the handler is asynchronous? you can inform the timer of 
+this and be given a callback:
 
 ```javascript
 var timer = new Timer(function(timer, cb) {
@@ -192,11 +192,10 @@ var timer = new Timer(function(timer, cb) {
 timer.start();
 ```
 
-Until our handler invokes the `cb()` callback (see above) the timer will not 
-schedule the next tick. This allows us to decide whether we want to schedule 
-the next tick straight away (i.e. calling `cb()` straight away) or once we've done all our necessary work inside our handler (i.e. calling `cb()` at the end).
+In this case, until your handler invokes the `cb()` callback (see above) the timer will not schedule the next tick. This allows you to decide whether you want to schedule 
+the next tick straight away (i.e. calling `cb()` straight away) or once all necessary work inside the handler is done (i.e. calling `cb()` at the end).
 
-We can also use the callback to [handle errors](#handling-errors).
+You can also use the callback to [handle errors](#handling-errors).
 
 ### This context
 
@@ -217,7 +216,7 @@ new Timer(function() {
 
 ### Synchronize to now
 
-Sometimes we may want to reset a timer that's already running, i.e. stop and 
+Sometimes you may want to reset a timer that's already running, i.e. stop and 
 then restart it without actually having to do so:
 
 ```javascript
@@ -238,7 +237,7 @@ Timer(function() {
 
 ### Handling errors
 
-We can pass in an `onError` handler to be informed of errors:
+You can pass in an `onError` handler to be informed of errors:
 
 ```javascript
 new Timer(function() {
@@ -253,7 +252,7 @@ new Timer(function() {
 Error handling works for asynchronous handlers too:
 
 ```javascript
-new Timer(function(cb) {
+new Timer(function(timer, cb) {
   cb(new Error('A dummy error'));
 }, 2000, {
   async: true,
@@ -263,9 +262,11 @@ new Timer(function(cb) {
 }).start();
 ```
 
+_Note: If you don't pass in an `onError` handler then errors are ignored._
+
 ### Multiple timers
 
-We can control multiple timers at a time by using the `Timers` interface.
+You can control multiple timers at a time by using the `Timers` interface.
 
 ```javascript
 var timers = new Timers();
@@ -274,7 +275,7 @@ var timer1 = timers.new(handlerFn, 2000, { repeat: true });
 var timer2 = timers.new(aletFn, 1000);
 var timer3 = ...
 
-timer1.start(); // we can start them one a a time, or...
+timer1.start(); // you can start them one a a time, or...
 
 timers.start(); // ...start them all at once
 
