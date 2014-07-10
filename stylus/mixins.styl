@@ -1,0 +1,30 @@
+simple-button(color, size = "medium", textColor = null)
+  // color detection and changes
+  textColor = #fff unless textColor
+
+  // dynamically calculated styles
+  padding ("medium" == size) ? 0.8em : 1em;
+  background-color color
+  color textColor
+  color rgba(textColor, .95)
+
+  // constant styles
+  cursor pointer
+  line-height 1em
+  text-align center
+  letter-spacing 0.1em
+  text-decoration none
+  display inline-block
+  border-radius 10px
+
+  &:hover, &:focus
+    background-color darken(color, 5%)
+    color darken(textColor, 3%)
+    color rgba(darken(textColor, 3%), .95)
+
+  &:active
+    background-color darken(color, 10%)
+
+  span
+    font-size 65%
+    color darken(textColor, 20%)
