@@ -1,15 +1,31 @@
 @import 'nib'
+@import 'prism'
 @import 'settings'
 @import 'mixins'
 @import 'core'
-@import 'clockFace'
+@import 'clock'
 
 
 frame-width = 30%
 
 
+.frame, .examples
+  pre
+    border 1px solid rgba(34, 34, 34, 0.2)
+    background: rgba(34, 34, 34, 0.03)
+    border-radius 4px
+    color #444
+    padding 0 5px
+    margin 0
+    white-space pre
+    word-wrap normal
+    overflow-x auto
+    line-height 2em
+    font-size 70%
+    font-weight normal
+
+
 .frame
-  font-family 'Montserrat', sans-serif
   font-size 120%
   line-height 1.6em
   display inline-block
@@ -24,19 +40,53 @@ frame-width = 30%
 
   & > div 
     padding 1em 2em 2em
-    
+
+  a.btn
+    simple-button(col2)
+
   .intro
     background-color col1
     color #fff
     padding-top 2em
 
+    h1
+      text-shadow 2px 2px 2px rgba(150, 150, 150, 1)
 
-.docs
+
+.examples
   box-sizing border-box
-  font-size 200%
-  padding 1em
+  padding 2em
   position relative
   top 0px
   left frame-width
   width (100% - frame-width)
+
+  pre
+    box-sizing border-box
+    font-size 100%
+    margin 1em 0
+
+  .output
+    display none
+    font-family Consolas, Monaco, 'Andale Mono', monospace;
+    background: #000
+    border 1px solid #333
+    color #fff
+    padding 0 1em
+    margin-top 0.5em
+
+    p
+      margin 1em 0
+      padding 0
+
+      &.action
+        color #ff0
+
+      &.error
+        color #f00
+
+  button
+    simple-button(col2, 'small')
+
+
 

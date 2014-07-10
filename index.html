@@ -13,7 +13,7 @@
   </head>
   <body>
 
-    <div class="frame">
+    <section class="frame">
       <div class="intro">
         <h1>Clockmaker.js</h1>
         <p class="pitch">Flexible Javascript timers which can be paused and modified on-the-fly.</p>
@@ -21,34 +21,41 @@
 
       <div class="download">
         <h2>Installation:</h2>
-<pre>
-$ npm install --save clockmaker <span># node</span>
-$ bower install --save clockmaker <span># browser</span>
-</pre>
+<pre><code class="language-bash">$ npm install --save clockmaker <span># node</span>
+$ bower install --save clockmaker <span># browser</span></code></pre>
 
         <h2>Download:</h2>
         <a class="btn" href="https://raw.githubusercontent.com/hiddentao/clockmaker/master/clockmaker.min.js">clockmaker.min.js <span>&lt;1KB gz</span></a>
 
-        <h2>Source:</h2>
-        <a class="btn" href="https://github.com/hiddentao/clockmaker">Fork on Github</a>
+        <h3>Source and docs:</h3>
+        <a class="btn" href="https://github.com/hiddentao/clockmaker">Github</a>
 
       </div>
-    </div>
+    </section>
 
-    <div class="docs">
-      orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dictum tincidunt volutpat. Integer imperdiet eros turpis, a eleifend metus dignissim ac. In hac habitasse platea dictumst. Quisque laoreet velit et metus ornare malesuada. Nulla facilisi. Praesent malesuada commodo dolor, a ullamcorper lorem faucibus eu. Nulla sollicitudin aliquet augue a imperdiet. Vestibulum massa neque, varius quis pellentesque nec, porta vitae lectus. Praesent sit amet ornare sapien. Nunc mollis, quam quis vestibulum dapibus, enim neque scelerisque lorem, vel facilisis felis augue vel nulla.
+    <section class="examples">
 
-      Ut malesuada suscipit libero, ac adipiscing felis consequat vel. Aenean arcu tortor, faucibus eu felis sed, adipiscing sodales elit. Donec interdum a est id molestie. Duis justo nulla, gravida id quam ac, pretium pellentesque quam. Etiam porttitor a urna ut lobortis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum neque sem, pulvinar quis leo ultrices, elementum tempor neque. Ut aliquet orci quis ultrices tristique. In hendrerit auctor adipiscing. Phasellus lobortis dui non tortor sollicitudin, quis pretium augue dignissim. Aliquam adipiscing nisi quis sapien cursus, at venenatis erat sollicitudin. Integer aliquet, lectus rhoncus porta tempor, sem ante iaculis diam, quis mattis augue tellus et diam. Vestibulum laoreet nec mauris a pretium. Maecenas tempus nulla id diam rhoncus aliquam. Duis fringilla dignissim leo, vitae rutrum nibh imperdiet at.
+      <section class="simple">
+        <h3>setTimeout</h3>
 
-      Integer pharetra viverra leo, vitae imperdiet sapien commodo vel. Nam tempor orci ut turpis lacinia adipiscing. Curabitur id neque mi. Nulla nec nisi vitae sapien lobortis pellentesque. Nullam convallis leo vel posuere pretium. Quisque dapibus justo eget luctus lobortis. Vestibulum consequat dolor a lorem interdum tempor. Nunc viverra consequat ipsum a volutpat. Maecenas in blandit felis.
+<pre class="code"><code class="language-javascript">Timer(function(timer) {
+  console.log(timer.getDelay() + ' millseconds done');
+}, 2000)</code></pre>
 
-      Aenean non nisi et ipsum tincidunt tincidunt. Fusce vitae tempus leo. Nunc eu ipsum a dolor tristique mollis quis eu nisi. Nunc a mi nec dolor sagittis lacinia at in ipsum. Fusce id dolor eu dolor tincidunt faucibus non id tortor. Aenean ullamcorper porttitor orci, gravida venenatis leo sagittis non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut leo sed magna vehicula egestas. Aenean eget lacus leo. Pellentesque elementum justo et cursus dapibus. Vivamus ante tortor, iaculis id pellentesque a, pulvinar id leo. Curabitur ut nisi convallis, tempus lectus eget, facilisis ante. Curabitur commodo velit ut scelerisque molestie. Sed quis nunc ac erat suscipit dignissim non condimentum sem. Morbi congue ante vel felis blandit pharetra.
 
-      Duis lacinia ut nibh vitae venenatis. Donec non tellus fringilla, fringilla arcu id, pellentesque lectus. Aenean nec erat rhoncus, egestas felis a, aliquet ante. Etiam mattis ultricies elit, ut sollicitudin diam consectetur eu. Nulla ullamcorper non sapien eu tempus. Suspendisse potenti. Fusce in ipsum aliquam, semper sapien porta, pulvinar orci. Aliquam libero diam, hendrerit vitae porta a, cursus eget nunc. Mauris venenatis odio non tristique aliquam.
-    </div>
+        <div class="actions">
+          <button>Start</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+    </section>
 
 
     <script src="https://cdn.rawgit.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
+    <script src="js/minified-web.js"></script>
+    <script src="js/prism.js"></script>
     <script src="js/main.js"></script>
 
   </body>

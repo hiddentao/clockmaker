@@ -3,18 +3,21 @@ simple-button(color, size = "medium", textColor = null)
   textColor = #fff unless textColor
 
   // dynamically calculated styles
-  padding ("medium" == size) ? 0.8em : 1em;
+  padding 0.8em;
   background-color color
   color textColor
   color rgba(textColor, .95)
+  font-size ('medium' == size ? 100% : 80%)
 
   // constant styles
+  box-sizing border-box
   cursor pointer
   line-height 1em
   text-align center
   letter-spacing 0.1em
   text-decoration none
   display inline-block
+  border 1px outset darken(color, 20%)
   border-radius 10px
 
   &:hover, &:focus
