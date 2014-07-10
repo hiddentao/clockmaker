@@ -118,18 +118,13 @@ Timer(function(timer) {
 }).start();
 ```
 
-The `getNumTicks()` method tells you how many times the timer has ticked.
-
-Let's stop the timer after 10 ticks:
+The `getNumTicks()` method tells you how many times the timer has ticked. Let's stop the timer after 10 ticks:
 
 ```javascript
-var count = 0;
-
 Timer(function(timer) {
   console.log('Another 2 seconds passed');
 
-  count++;
-  if (10 === count) {
+  if (10 === timer.getNumTicks()) {
     timer.stop();
   }
 }, 2000, {
