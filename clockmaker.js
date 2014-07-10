@@ -160,6 +160,7 @@
   Timer.prototype.synchronize = function() {
     if (this._timerHandle) {
       clearTimeout(this._timerHandle);
+      this._timerHandle = null;
     }
 
     this._scheduleNextTick();

@@ -359,12 +359,16 @@ test['Timer'] = {
       mocker.clock.tick(1);
 
       this.fn.should.have.been.calledOnce;
-      this.timer.getNumTicks().should.eql(1);
+
+      this.timer.synchronize();
 
       mocker.clock.tick(999);
 
+      this.fn.should.have.been.calledOnce;
+
+      mocker.clock.tick(1000);
+
       this.fn.should.have.been.calledTwice;
-      this.timer.getNumTicks().should.eql(2);
     }
     
   },
