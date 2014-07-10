@@ -11,7 +11,7 @@ better control over them.
 Features:
 
 * Stop and restart timers.
-* Change the timer delay in real-time.
+* Change the timer interval in real-time.
 * Start and stop multiple timers in one go.
 * Robust error handling.
 * Uses method chaining for ease of use.
@@ -51,7 +51,7 @@ var Timer = require('clockmaker').Timer,
 
 
 
-### setTimeout
+### One-shot - setTimeout
 
 The basic `Timer` works in the same way as `setTimeout`:
 
@@ -82,13 +82,29 @@ var timer = new Timer(function() {
 timer.start();
 timer.isStopped();  // false
 
-// ... some time later
+// ... >2 seconds later
 
-timer.start();  
+timer.start();      // has no effect
 timer.isStopped();  // true
 ```
 
-### setInterval
+And we can stop a timer from executing its handler if we `stop()` it in time:
+
+```javascript
+var timer = new Timer(function() {
+  console.log('You should never see this line');
+}, 2000);
+
+timer.start();
+timer.isStopped();  // false
+
+// ... <2 seconds later
+
+timer.stop();
+timer.isStopped();  // true
+```
+
+### Repeating - setInterval
 
 We simulate `setInterval` behaviour by setting `repeat: true` in the options.
 
