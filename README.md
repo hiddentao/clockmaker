@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/hiddentao/clockmaker.png)](http://travis-ci.org/hiddentao/clockmaker)
 
-Flexible timers for Javascript which can be paused and resumed.
+Flexible timers for Javascript which can be paused and modified on-the-fly.
 
 Clockmaker is inspired by [Mozilla's MiniDaemon](https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval#A_little_framework) and provides an alternative to the built-in `setTimeout` and `setInterval` functions. It is 
 especially useful when you are running multiple timers and wish to exercise 
