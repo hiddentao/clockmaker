@@ -51,7 +51,7 @@ var Timer = require('clockmaker').Timer,
 
 
 
-### One-shot - setTimeout
+### setTimeout
 
 The basic `Timer` works in the same way as `setTimeout`:
 
@@ -104,7 +104,7 @@ timer.stop();
 timer.isStopped();  // true
 ```
 
-### Repeating - setInterval
+### setInterval
 
 We simulate `setInterval` behaviour by setting `repeat: true` in the options.
 
