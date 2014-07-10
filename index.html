@@ -36,10 +36,10 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
     <section class="examples">
 
       <section class="simple">
-        <h3>setTimeout</h3>
+        <h3>Single-run timer</h3>
 
 <pre class="code"><code class="language-javascript">Timer(function(timer) {
-  console.log(timer.getDelay() + ' millseconds done');
+  console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
 }, 2000)</code></pre>
 
 
@@ -50,10 +50,67 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
         <div class="output"></div>
 
       </section>
-    </section>
+
+      <section class="repeat">
+        <h3>Repeating timer</h3>
+
+<pre class="code"><code class="language-javascript">Timer(function(timer) {
+  console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
+}, 2000, { repeat: true })</code></pre>
 
 
-    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/master/clockmaker.min.js"></script>
+        <div class="actions">
+          <button>Start</button>
+          <button>Stop</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+      <section class="increasing-delay">
+        <h3>Change timer interval</h3>
+
+<pre class="code"><code class="language-javascript">Timer(function(timer) {
+  var delay = timer.getDelay();
+  console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
+  timer.setDelay(delay + 500);
+}, 1000, { repeat: true })</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+          <button>Stop</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+      <section class="sync">
+        <h3>Synchronize to now</h3>
+
+        <p>This resets the timer's internal time counter to start from the present moment.</p>
+
+<pre class="code"><code class="language-javascript">Timer(function(timer) {
+  console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
+}, 2000, { repeat: true })</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+          <button>Stop</button>
+          <button>Synchronize</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+    </section> <!-- .examples -->
+
+
+    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/43a55cbb82ebffa932910ef0448cd7b760590439/clockmaker.min.js"></script>
     <script src="js/minified-web.js"></script>
     <script src="js/prism.js"></script>
     <script src="js/main.js"></script>

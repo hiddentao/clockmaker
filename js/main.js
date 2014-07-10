@@ -14,22 +14,32 @@ $.ready(function() {
 
     var outputDiv = $('.output', e);
 
+    var _refreshScroll = function() {
+      outputDiv[0].scrollTop = outputDiv[0].scrollHeight;
+    }
+
     // create 'console' shim
     var _console = {
       log: function(msg) {
         outputDiv.add(EE('p', msg));
+        _refreshScroll();
       },
       error: function(err) {
         outputDiv.add(EE('p', { '@class' : 'error' }, err.toString()));
+        _refreshScroll();
       },  
       action: function(msg) {
         outputDiv.add(EE('p', { '@class' : 'action' }, '>> ' + msg));
+        _refreshScroll();
       }
     };
     var _myConsoleName = 'console' + (++consolesCreated);
     window[_myConsoleName] = _console;
 
     var timer = eval($('pre', e).text().replace('console.', _myConsoleName + '.'));
+    if (!timer._onError) {
+      timer._onError = console.error;      
+    }
 
     $('button', e).on('click', function(e) {
       e.preventDefault();
@@ -41,6 +51,9 @@ $.ready(function() {
       } else if ('stop' === $(this).text().toLowerCase()) {
         _console.action('timer.stop()');
         timer.stop();
+      } else if ('synchronize' === $(this).text().toLowerCase()) {
+        _console.action('timer.synchronize()');
+        timer.synchronize();
       }
     });
   });

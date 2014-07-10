@@ -61,6 +61,17 @@ frame-width = 30%
   left frame-width
   width (100% - frame-width)
 
+  & > section
+    padding 1.5em 0
+    border-top 1px dashed #ccc
+
+    h3
+      margin-top 0.5em
+
+    &:first-child
+      padding-top 0
+      border-top none
+
   pre
     box-sizing border-box
     font-size 100%
@@ -69,18 +80,21 @@ frame-width = 30%
   .output
     display none
     font-family Consolas, Monaco, 'Andale Mono', monospace;
-    background: #000
+    background: #fff
     border 1px solid #333
-    color #fff
+    border-radius 5px
+    color #000
     padding 0 1em
     margin-top 0.5em
+    max-height 200px
+    overflow-y auto
 
     p
       margin 1em 0
       padding 0
 
       &.action
-        color #ff0
+        color #999
 
       &.error
         color #f00
