@@ -15,6 +15,14 @@
 
     <section class="frame">
       <div class="intro">
+        <div class="clock">
+          <div class="outer_face">
+            <div class="inner_face">
+              <div class="hand"></div>
+            </div>
+          </div>
+        </div>
+
         <h1>Clockmaker.js</h1>
         <p class="pitch">Flexible Javascript timers which can be paused and modified on-the-fly.</p>
       </div>
@@ -155,7 +163,7 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
 
 <pre class="code"><code class="language-javascript">Timer(function(timer, cb) {
   console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
-  // delay the callback
+  // defer the callback
   Timer(function() {
     cb();
   }, 2000).start(); 

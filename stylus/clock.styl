@@ -2,6 +2,9 @@
  * Taken from http://www.javascriptkit.com/dhtmltutors/css3clock.shtml
  */
 
+
+
+
 .clock
   
   /* Outer clock face */
@@ -11,41 +14,8 @@
     height clockSize
     border-radius clockSize
     background transparent
-    box-shadow inset 0 0 10px gray
-    border 14px solid black
-
-    &.show_markers
-      &:before, &:after, .marker
-        content ""
-        position absolute
-        width 10px
-        height 100%
-        background black
-        z-index 0
-        left 50%
-        margin-left -5px
-        top 0
-
-      /* 9-3 time marker specifically*/
-      &:after 
-        transform rotate(90deg)
-
-      & .marker 
-        background gray
-        width 8px
-        margin-left -4px
-
-        &.oneseven
-          transform rotate(30deg)
-
-        &.twoeight
-          transform rotate(60deg)
-
-        &.fourten
-          transform rotate(120deg)
-
-        &.fiveeleven
-          transform rotate(150deg)
+    box-shadow inset 0 0 10px #666
+    border clockBorderWidth solid #fff
 
   /* Inner clock face */
   .inner_face
@@ -60,28 +30,32 @@
     left 6% /* center DIV horizontally (100%-88% / 2) */
     top 6% /* center DIV vertically (100%-88% / 2) */
   
-
     /* clock center dot small */
     &:before 
       content ""
-      width 18px
-      height 18px
-      border-radius 18px
-      margin-left -9px
-      margin-top -9px
-      background black
+      width clockBorderWidth * 2
+      height clockBorderWidth * 2
+      border-radius clockBorderWidth * 2
+      margin-left clockBorderWidth * -1
+      margin-top clockBorderWidth * -1
+      background #fff
       position absolute
       top 50%
       left 50%
-      box-shadow 0 0 30px gray
-  
+      box-shadow 0 0 30px #666
+
+    .hand
+      position absolute
+      width 6px /* default width of hands/ hour hand */
+      height 45% /* default height of hands/ hour hand */
+      top 5% /* offset hand vertically by 20% so its bottom is at center of clock */
+      left 50% /* offset hand horiz by 50% so its left is at center of clock */
+      margin-left -3px /* Account for hand width to center hand horizonally */
+      background #fff
+      transform rotate(0deg)
+      transform-origin bottom
+      z-index -1
+      box-shadow 0 0 10px #666
       
 
-header
-  .clock
-    .outer_face
-      .marker
-        background header-fg-color
-    .inner_face
-      background header-bg-color
 

@@ -26,18 +26,18 @@ frame-width = 30%
 
 
 .frame
-  background url("../img/nice_snow.png");
-  font-size 120%
-  line-height 1.6em
   display inline-block
-  width frame-width
   box-sizing border-box
-  min-height 100%
+  width frame-width
   height 100%
+  min-height 100%
   position fixed
   top 0px
   left 0px
   border-right 1px solid col1
+  background url("../img/nice_snow.png");
+  font-size 120%
+  line-height 1.6em
 
   & > div 
     padding 1em 2em 2em
@@ -63,11 +63,11 @@ frame-width = 30%
 
 .examples
   box-sizing border-box
-  padding 2em
   position relative
+  width (100% - frame-width)
   top 0px
   left frame-width
-  width (100% - frame-width)
+  padding 2em
 
   & > section
     padding 1.5em 0
@@ -120,3 +120,31 @@ frame-width = 30%
 
 
 
+/** Smaller screens */
+
+@media screen and (max-width: 1024px)
+  .frame
+    display block
+    box-sizing border-box
+    width 100%
+    position static
+    border-right none
+    text-align center
+
+    .clock
+      display inline-block
+
+    h1
+      margin-top 0.5em
+
+    .download
+      pre
+        display inline-block
+    a.source
+      margin-top 0
+
+
+  .examples
+    position static
+    box-sizing border-box
+    width 100%

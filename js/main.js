@@ -1,6 +1,14 @@
 var MINI = require('minified');
 var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
+
+window.requestAnimationFrame = window.requestAnimationFrame
+                             || window.mozRequestAnimationFrame
+                             || window.webkitRequestAnimationFrame
+                             || window.msRequestAnimationFrame
+                             || function(f){Timer(f, 1000/60).start()}
+
+
 $.ready(function() {
 
   // in order to simulate console.log and console.error for each code example
@@ -58,4 +66,25 @@ $.ready(function() {
     });
   });
 
+
+  // the clock
+
+  var clockHand = $('.clock .hand');
+  var startingTime = new Date().getTime();
+  var updateClock;
+
+  (updateClock = function() {
+    // we want it to move continously, and make a full turn every 8 seconds
+    var deg = (((new Date().getTime() - startingTime) / 8000.0) * 360) % 360;
+    var props = {};
+    ['transform', 'MozTransform', 'WebkitTransform', 'msTransform', 'OTransform'].forEach(function(p) {
+      props['$' + p] = 'rotate(' + deg + 'deg)';
+    });
+    clockHand.set(props);
+
+    requestAnimationFrame(updateClock);
+  })();
+
 });
+
+
