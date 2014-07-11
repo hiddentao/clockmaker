@@ -21,11 +21,12 @@ frame-width = 30%
     word-wrap normal
     overflow-x auto
     line-height 2em
-    font-size 70%
+    font-size 80%
     font-weight normal
 
 
 .frame
+  background url("../img/nice_snow.png");
   font-size 120%
   line-height 1.6em
   display inline-block
@@ -50,7 +51,14 @@ frame-width = 30%
     padding-top 2em
 
     h1
-      text-shadow 2px 2px 2px rgba(150, 150, 150, 1)
+      text-shadow 2px 2px 2px #666
+
+  a.source
+    margin-top 2em
+    simple-button(#fff, 'small', #000)
+    background url("../img/github.png") 8px 8px no-repeat
+    padding-left 36px
+    background-size 24px 24px
 
 
 .examples
@@ -67,6 +75,14 @@ frame-width = 30%
 
     h3
       margin-top 0.5em
+      font-weight normal
+      font-size 140%
+      color #333
+
+      &:before
+        content ">"
+        position relative
+        right 0.5em
 
     &:first-child
       padding-top 0
@@ -80,10 +96,10 @@ frame-width = 30%
   .output
     display none
     font-family Consolas, Monaco, 'Andale Mono', monospace;
-    background: #fff
-    border 1px solid #333
+    background: consoleBgColor
+    border 1px solid darken(consoleBgColor, 50%)
     border-radius 5px
-    color #000
+    color consoleFgColor
     padding 0 1em
     margin-top 0.5em
     max-height 200px
@@ -94,10 +110,10 @@ frame-width = 30%
       padding 0
 
       &.action
-        color #999
+        color consoleActionFgColor
 
       &.error
-        color #f00
+        color consoleErrorFgColor
 
   button
     simple-button(col2, 'small')

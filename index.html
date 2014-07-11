@@ -27,10 +27,11 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
         <h2>Download:</h2>
         <a class="btn" href="https://raw.githubusercontent.com/hiddentao/clockmaker/master/clockmaker.min.js">clockmaker.min.js <span>&lt;1KB gz</span></a>
 
-        <h3>Source and docs:</h3>
-        <a class="btn" href="https://github.com/hiddentao/clockmaker">Github</a>
+        <a  class="source" href="https://github.com/hiddentao/clockmaker">Fork on Github</a>
 
       </div>
+
+
     </section>
 
     <section class="examples">
@@ -88,7 +89,7 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
       </section>
 
 
-      <section class="sync">
+      <section class="synchronize">
         <h3>Synchronize to now</h3>
 
         <p>This resets the timer's internal time counter to start from the present moment.</p>
@@ -107,10 +108,100 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
 
       </section>
 
+
+
+
+
+
+
+      <section class="context">
+        <h3>Handler 'this' context</h3>
+
+<pre class="code"><code class="language-javascript">Timer(function() {
+  // this == document
+  console.log('This page has ' + this.querySelectorAll('.examples > section').length + ' examples!');
+}, 500, { this: document })</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+
+      <section class="errors">
+        <h3>Error handling</h3>
+
+<pre class="code"><code class="language-javascript">Timer(function() {
+  throw new Error('You should see this!');
+}, 500, { onError: console.error })</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+
+
+      <section class="async">
+        <h3>Asynchronous handler</h3>
+
+<pre class="code"><code class="language-javascript">Timer(function(timer, cb) {
+  console.log(timer.getDelay() + ' millseconds, ' + timer.getNumTicks() + ' ticks.');
+  // delay the callback
+  Timer(function() {
+    cb();
+  }, 2000).start(); 
+}, 500, { async: true, repeat: true })</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+          <button>Stop</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+      <section class="multi">
+        <h3>Multiple timers</h3>
+
+<pre class="code"><code class="language-javascript">new Timers()
+  .add(
+    Timer(function(timer) {
+      console.log('Timer 1: ' + timer.getNumTicks() + ' ticks');
+    }, 1000, { repeat: true })
+  )
+  .add(
+    Timer(function(timer) {
+      console.log('Timer 2: ' + timer.getNumTicks() + ' ticks');
+    }, 3000, { repeat: true })
+  )
+</code></pre>
+
+        <div class="actions">
+          <button>Start</button>
+          <button>Stop</button>
+        </div>
+
+        <div class="output"></div>
+
+      </section>
+
+
+
     </section> <!-- .examples -->
 
 
-    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/43a55cbb82ebffa932910ef0448cd7b760590439/clockmaker.min.js"></script>
+    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/388d94323c9c54fd8d6dba4d10434c8ea8614494/clockmaker.min.js"></script>
     <script src="js/minified-web.js"></script>
     <script src="js/prism.js"></script>
     <script src="js/main.js"></script>

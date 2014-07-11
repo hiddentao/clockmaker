@@ -36,7 +36,7 @@ $.ready(function() {
     var _myConsoleName = 'console' + (++consolesCreated);
     window[_myConsoleName] = _console;
 
-    var timer = eval($('pre', e).text().replace('console.', _myConsoleName + '.'));
+    var timer = eval($('pre', e).text().replace(/console\./mg, _myConsoleName + '.'));
     if (!timer._onError) {
       timer._onError = console.error;      
     }
