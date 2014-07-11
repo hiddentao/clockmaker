@@ -4,6 +4,20 @@
 
 
 
+@keyframes turn {
+   0% {
+      transform rotate(0deg)
+   }
+
+   50% {
+      transform rotate(180deg)
+   }
+
+   100% {
+      transform rotate(360deg)
+   }
+}
+
 
 .clock
   
@@ -52,10 +66,14 @@
       left 50% /* offset hand horiz by 50% so its left is at center of clock */
       margin-left -3px /* Account for hand width to center hand horizonally */
       background #fff
-      transform rotate(0deg)
       transform-origin bottom
       z-index -1
       box-shadow 0 0 10px #666
+
+      animation-name turn
+      animation-duration 8s
+      animation-timing-function linear
+      animation-iteration-count infinite
       
 
 
