@@ -8,6 +8,8 @@ Clockmaker is inspired by [Mozilla's MiniDaemon](https://developer.mozilla.org/e
 especially useful when you are running multiple timers and wish to exercise 
 better control over them.
 
+Demo: [http://hiddentao.github.io/clockmaker/](http://hiddentao.github.io/clockmaker/)
+
 Features:
 
 * Stop and restart timers.
