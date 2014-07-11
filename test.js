@@ -537,6 +537,18 @@ test['Timers'] = {
     timer.should.be.instanceOf(clockmaker.Timer);
   },
 
+  'add existing timer': function() {
+    var timers = clockmaker.Timers();
+
+    var timer = clockmaker.Timer();
+
+    timers._timers.length.should.eql(0);
+
+    timers.add(timer).should.eql(timers);
+
+    timers._timers.pop().should.eql(timer);
+  },
+
   'start all timers': function() {
     var timers = clockmaker.Timers();
 
@@ -549,7 +561,7 @@ test['Timers'] = {
       t.start = startSpy;
     });
 
-    timers.start();
+    timers.start().should.eql(timers);
 
     startSpy.should.have.been.calledTwice;
   },
@@ -566,7 +578,7 @@ test['Timers'] = {
       t.stop = stopSpy;
     });
 
-    timers.stop();
+    timers.stop().should.eql(timers);
 
     stopSpy.should.have.been.calledTwice;
   }

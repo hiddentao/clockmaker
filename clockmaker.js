@@ -262,24 +262,42 @@
 
 
 
+  /**
+   * Add a timer to this collection.
+   *
+   * @param {Timer} timer The timer.
+   * @return this
+   */
+  Timers.prototype.add = function(timer) {
+    this._timers.push(timer);
+    return this;
+  };
+
+
 
   /**
    * Start all the timers.
+   * @return this
    */
   Timers.prototype.start = function() {
     this._timers.forEach(function(t) {
       t.start();
     });
+
+    return this;
   };
 
 
   /**
    * Stop all the timers.
+   * @return this
    */
   Timers.prototype.stop = function() {
     this._timers.forEach(function(t) {
       t.stop();
     });
+
+    return this;
   };
 
 
