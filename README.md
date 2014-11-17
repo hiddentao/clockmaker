@@ -203,7 +203,7 @@ var ctx = {
 new Timer(function() {
   console.log(this.dummy);  // true
 }, 2000, {
-  this: ctx
+  thisObj: ctx
 }).start();
 ```
 
@@ -265,8 +265,8 @@ You can control multiple timers at a time by using the `Timers` interface.
 ```javascript
 var timers = new Timers();
 
-var timer1 = timers.new(handlerFn, 2000, { repeat: true });
-var timer2 = timers.new(aletFn, 1000);
+var timer1 = timers.create(handlerFn, 2000, { repeat: true });
+var timer2 = timers.create(aletFn, 1000);
 var timer3 = ...
 
 timer1.start(); // you can start them one a a time, or...

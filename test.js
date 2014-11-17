@@ -194,7 +194,7 @@ test['Timer'] = {
       var fn = mocker.spy();
       var ctx = {};
       var timer = clockmaker.Timer(fn, 1000, {
-        this: ctx
+        thisObj: ctx
       });
 
       timer.start();
@@ -451,7 +451,7 @@ test['Timer'] = {
       },
       'when set': function() {
         var timer = clockmaker.Timer(this.fn, 1000, {
-          this: test,
+          thisObj: test,
           async: true
         });
 
@@ -532,7 +532,7 @@ test['Timers'] = {
   'create new timer': function() {
     var timers = clockmaker.Timers();
 
-    var timer = timers.new(null, 123, {});
+    var timer = timers.create(null, 123, {});
 
     timer.should.be.instanceOf(clockmaker.Timer);
   },
@@ -552,8 +552,8 @@ test['Timers'] = {
   'start all timers': function() {
     var timers = clockmaker.Timers();
 
-    timers.new(null, 123, {});
-    timers.new(null, 123, {});
+    timers.create(null, 123, {});
+    timers.create(null, 123, {});
 
     var startSpy = mocker.spy();
 
@@ -569,8 +569,8 @@ test['Timers'] = {
   'stop all timers': function() {
     var timers = clockmaker.Timers();
 
-    timers.new(null, 123, {});
-    timers.new(null, 123, {});
+    timers.create(null, 123, {});
+    timers.create(null, 123, {});
 
     var stopSpy = mocker.spy();
 

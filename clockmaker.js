@@ -48,7 +48,7 @@
    * @param {Function} fn The handler function to invoke on each tick.
    * @param {Number} delayMs The timer delay in milliseconds.
    * @param {Object} [options] Additional options.
-   * @param {Object} [options.this] The `this` object to invoke `fn` with. If ommitted then `fn` is used as `this`.
+   * @param {Object} [options.thisObj] The `this` object to invoke `fn` with. If ommitted then `fn` is used as `this`.
    * @param {Boolean} [options.repeat] Whether the timer should keep repeating until we stop it.
    * @param {Boolean} [options.async] Whether `fn` is asynchronous (i.e. accepts a callback).
    * @param {Function} [options.onError] Function to call if `fn` throws an error.
@@ -64,7 +64,7 @@
     this._delayMs = delayMs;
 
     options = options || {};
-    this._fnThis = options.this || this._fn;
+    this._fnThis = options.thisObj || this._fn;
     this._repeat = !!options.repeat;
     this._onError = options.onError;
     this._async = !!options.async;
@@ -252,7 +252,7 @@
 
    * @return {Timer} The new `Timer`, not yet started.
    */
-  Timers.prototype.new = function(fn, delayMs, options) {
+  Timers.prototype.create = function(fn, delayMs, options) {
     var t = new Timer(fn, delayMs, options);
 
     this._timers.push(t);
