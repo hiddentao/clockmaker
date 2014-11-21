@@ -130,7 +130,7 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
 <pre class="code"><code class="language-javascript">Timer(function() {
   // this == document
   console.log('This page has ' + this.querySelectorAll('.examples > section').length + ' examples!');
-}, 500, { this: document })</code></pre>
+}, 500, { thisObj: document })</code></pre>
 
         <div class="actions">
           <button>Start</button>
@@ -211,7 +211,7 @@ $ bower install --save clockmaker <span># browser</span></code></pre>
     </section> <!-- .examples -->
 
 
-    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/388d94323c9c54fd8d6dba4d10434c8ea8614494/clockmaker.min.js"></script>
+    <script src="https://cdn.rawgit.com/hiddentao/clockmaker/b8d4e42c00d77294d4776ce7f6dd3f0025940103/clockmaker.min.js"></script>
     <script src="js/minified-web.js"></script>
     <script src="js/prism.js"></script>
     <script src="js/main.js"></script>
