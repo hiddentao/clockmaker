@@ -549,6 +549,21 @@ test['Timers'] = {
     timers._timers.pop().should.eql(timer);
   },
 
+  'remove existing timer': function() {
+    var timers = clockmaker.Timers(),
+        timer1 = clockmaker.Timer(),
+        timer2 = clockmaker.Timer(),
+        timer3 = clockmaker.Timer();
+
+    timers.add(timer1);
+    timers.add(timer2);
+    timers.add(timer3);
+
+    timers.remove(timer2);
+    timers._timers.length.should.eql(2);
+    timers._timers.indexOf(timer2).should.eql(-1);
+  },
+
   'start all timers': function() {
     var timers = clockmaker.Timers();
 

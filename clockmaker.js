@@ -274,6 +274,20 @@
   };
 
 
+  /**
+   * Remove a timer from this collection.
+   *
+   * @param {Timer} timer The timer to be removed.
+   * @return this
+   */
+  Timers.prototype.remove = function(timer) {
+    var index = this._timers.indexOf(timer);
+    if (index !== -1) {
+      this._timers.splice(index, 1);
+    }
+    return this;
+  };
+
 
   /**
    * Start all the timers.
