@@ -1,6 +1,6 @@
 # Contribute to Clockmaker
 
-This guide guidelines for those wishing to contribute to Squel.
+This guide guidelines for those wishing to contribute to Clockmaker.
 
 ## Contributor license agreement
 
@@ -18,5 +18,5 @@ We will only accept a merge requests which meets the following criteria:
 * Fixes one specific issue or implements one specific feature (do not combine things, send separate merge requests if needed)
 * Keeps the code base clean and well structured
 * Contains functionality we think other users will benefit from too
-* Doesn't add unnessecary configuration options since they complicate future changes
+* Doesn't add unnecessary configuration options since they complicate future changes
 
